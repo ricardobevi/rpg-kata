@@ -52,14 +52,23 @@ public class RPGCharacter {
   }
 
   private void damageWith(double damageAmount, int othersLevel) {
+    health = Math.max(health - damageAmount * calculateHandicap(othersLevel), MIN_HEALTH);
+  }
 
-    if(othersLevel < level && level - othersLevel >= 5){
-      health = Math.max(health - damageAmount / 2, MIN_HEALTH);
-    } else if(othersLevel > level && othersLevel - level >= 5){
-      health = Math.max(health - damageAmount * 1.5, MIN_HEALTH);
-    } else {
-      health = Math.max(health - damageAmount, MIN_HEALTH);
+  private double calculateHandicap(int othersLevel) {
+    if(is5LevelsBelow(othersLevel)){
+      return 0.5;
+    } else if(is5LevelsUp(othersLevel)){
+      return 1.5;
     }
+    return 1;
+  }
 
+  private boolean is5LevelsUp(int othersLevel) {
+    return othersLevel > level && othersLevel - level >= 5;
+  }
+
+  private boolean is5LevelsBelow(int othersLevel) {
+    return othersLevel < level && level - othersLevel >= 5;
   }
 }
